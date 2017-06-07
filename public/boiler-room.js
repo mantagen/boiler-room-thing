@@ -5,7 +5,15 @@ const updateState = data => state => cb => {
   cb(state)
 }
 
-const fetchFavourites = cb => fetch('/favourites').then(res => res.json()).then(cb)
+const fetchFavourites = cb => fetch('/favourites')
+.then(res => {
+  if (!res.ok) {
+    throw Error(response.statusText)
+  }
+  return res.json()
+})
+.then(cb)
+.catch(err => console.err)
 
 const receiveFavourites = results => updateState({ 'favourites': results })
 
